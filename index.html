@@ -1,191 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Propose Day ❤️</title>
+  <meta charset="UTF-8" />
+  <title>Propose Day ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
 
-<style>
-* {
-  box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-body {
-  margin: 0;
-  height: 100vh;
-  background: #7a0019;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #7b001c;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
 
-/* CARD */
-.scene {
-  perspective: 1000px;
-  z-index: 5;
-}
+    .card-container {
+      perspective: 1000px;
+    }
 
-.card {
-  width: 340px;
-  height: 240px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 1s;
-}
+    .card {
+      width: 300px;
+      height: 200px;
+      background: #f7b6c8;
+      color: white;
+      border-radius: 16px;
+      text-align: center;
+      padding: 24px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+      position: relative;
+    }
 
-.card.is-flipped {
-  transform: rotateY(180deg);
-}
+    .card.flip {
+      transform: rotateY(180deg);
+    }
 
-.face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #f8b4c6;
-  border-radius: 18px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  backface-visibility: hidden;
-  text-align: center;
-  padding: 20px;
-}
+    .side {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 
-.face h2 {
-  margin-bottom: 20px;
-}
+    .back {
+      transform: rotateY(180deg);
+      font-size: 24px;
+    }
 
-.back {
-  transform: rotateY(180deg);
-}
+    button {
+      margin-top: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      background: white;
+      color: #7b001c;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
-.buttons {
-  display: flex;
-  gap: 15px;
-}
+    .no {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
 
-button {
-  padding: 10px 22px;
-  border-radius: 30px;
-  border: 2px solid white;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
-}
+    /* Hearts */
+    .heart {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      font-size: 20px;
+      color: #ff6b81;
+      animation: float 4s linear forwards, pulse 1.5s infinite;
+    }
 
-button:hover {
-  background: white;
-  color: #f06292;
-}
+    @keyframes float {
+      to {
+        transform: translateY(-100vh) translateX(calc(-50vw + 100vw * var(--x)));
+        opacity: 0;
+      }
+    }
 
-/* HEARTS */
-.heart {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  font-size: 18px;
-  color: rgba(255,120,150,0.8);
-  animation: float 6s linear forwards, pulse 1.5s infinite;
-}
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
 
-@keyframes float {
-  to {
-    transform: translate(var(--x), -110vh);
-    opacity: 0;
-  }
-}
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      background: white;
+      animation: confetti 1s linear forwards;
+    }
 
-@keyframes pulse {
-  50% { transform: scale(1.3); }
-}
-
-/* CONFETTI */
-.confetti {
-  position: absolute;
-  width: 8px;
-  height: 12px;
-  top: 50%;
-  left: 50%;
-  animation: blast 2.5s ease-out forwards;
-}
-
-@keyframes blast {
-  to {
-    transform: translate(var(--x), var(--y)) rotate(720deg);
-    opacity: 0;
-  }
-}
-</style>
+    @keyframes confetti {
+      to {
+        transform: translate(calc(-100px + 200px * var(--x)), calc(-100px + 200px * var(--y)));
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<audio id="music" preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2c2c9e5a1d.mp3" type="audio/mpeg">
-</audio>
-
-<div class="scene">
-  <div class="card" id="card">
-    <div class="face front">
-      <h2>Will you be mine forever?</h2>
-      <div class="buttons">
+  <div class="card-container">
+    <div class="card" id="card">
+      <div class="side front">
+        <h3>Will you be mine forever?</h3>
         <button id="yesBtn">ALWAYS ❤️</button>
-        <button id="noBtn">NO</button>
+        <button class="no" id="noBtn">NO 🙈</button>
+      </div>
+      <div class="side back">
+        I LOVE YOU ❤️
       </div>
     </div>
-    <div class="face back">
-      <h1>I LOVE YOU</h1>
-    </div>
   </div>
-</div>
 
-<script>
-const card = document.getElementById("card");
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const music = document.getElementById("music");
+  <audio id="music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c3c61b6d8a.mp3" type="audio/mpeg">
+  </audio>
 
-yesBtn.addEventListener("click", () => {
-  card.classList.add("is-flipped");
-  music.play().catch(()=>{});
-  startHearts();
-  confettiBurst();
-  vibrate();
-});
+  <script>
+    const card = document.getElementById("card");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const music = document.getElementById("music");
 
-noBtn.addEventListener("mouseenter", () => {
-  const x = Math.random() * 200 - 100;
-  const y = Math.random() * 100 - 50;
-  noBtn.style.transform = translate(${x}px, ${y}px);
-});
+    yesBtn.addEventListener("click", () => {
+      card.classList.add("flip");
 
-function startHearts() {
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "♥";
-    heart.style.setProperty("--x", ${Math.random()*400-200}px);
-    heart.style.fontSize = Math.random()*16+14+"px";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),6000);
-  }, 300);
-}
+      // Play music (allowed because user clicked)
+      music.play();
 
-function confettiBurst() {
-  for (let i=0;i<40;i++) {
-    const c = document.createElement("div");
-    c.className = "confetti";
-    c.style.background = hsl(${Math.random()*360},70%,75%);
-    c.style.setProperty("--x", ${Math.random()*600-300}px);
-    c.style.setProperty("--y", ${Math.random()*600-300}px);
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),2500);
-  }
-}
-  
+      // Vibration
+      if (navigator.vibrate) {
+        navigator.vibrate(200);
+      }
+
+      // Hearts
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.setProperty("--x", Math.random());
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }
+
+      // Confetti
+      for (let i = 0; i < 30; i++) {
+        const conf = document.createElement("div");
+        conf.className = "confetti";
+        conf.style.setProperty("--x", Math.random());
+        conf.style.setProperty("--y", Math.random());
+        document.body.appendChild(conf);
+        setTimeout(() => conf.remove(), 1000);
+      }
+    });
+
+    noBtn.addEventListener("mouseover", () => {
+      noBtn.style.top = Math.random() * 150 + "px";
+      noBtn.style.left = Math.random() * 200 + "px";
+    });
+  </script>
+
+</body>
+</html>
