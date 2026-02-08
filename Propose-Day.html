@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Propose Day ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: #7a0019;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* CARD */
+.scene {
+  perspective: 1000px;
+  z-index: 5;
+}
+
+.card {
+  width: 340px;
+  height: 240px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #f8b4c6;
+  border-radius: 18px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden;
+  text-align: center;
+  padding: 20px;
+}
+
+.face h2 {
+  margin-bottom: 20px;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+}
+
+button {
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  background: white;
+  color: #f06292;
+}
+
+/* HEARTS */
+.heart {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  font-size: 18px;
+  color: rgba(255,120,150,0.8);
+  animation: float 6s linear forwards, pulse 1.5s infinite;
+}
+
+@keyframes float {
+  to {
+    transform: translate(var(--x), -110vh);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  50% { transform: scale(1.3); }
+}
+
+/* CONFETTI */
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  animation: blast 2.5s ease-out forwards;
+}
+
+@keyframes blast {
+  to {
+    transform: translate(var(--x), var(--y)) rotate(720deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2c2c9e5a1d.mp3" type="audio/mpeg">
+</audio>
+
+<div class="scene">
+  <div class="card" id="card">
+    <div class="face front">
+      <h2>Will you be mine forever?</h2>
+      <div class="buttons">
+        <button id="yesBtn">ALWAYS ❤️</button>
+        <button id="noBtn">NO</button>
+      </div>
+    </div>
+    <div class="face back">
+      <h1>I LOVE YOU</h1>
+    </div>
+  </div>
+</div>
+
+<script>
+const card = document.getElementById("card");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const music = document.getElementById("music");
+
+yesBtn.addEventListener("click", () => {
+  card.classList.add("is-flipped");
+  music.play().catch(()=>{});
+  startHearts();
+  confettiBurst();
+  vibrate();
+});
+
+noBtn.addEventListener("mouseenter", () => {
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 100 - 50;
+  noBtn.style.transform = translate(${x}px, ${y}px);
+});
+
+function startHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "♥";
+    heart.style.setProperty("--x", ${Math.random()*400-200}px);
+    heart.style.fontSize = Math.random()*16+14+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+  }, 300);
+}
+
+function confettiBurst() {
+  for (let i=0;i<40;i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.background = hsl(${Math.random()*360},70%,75%);
+    c.style.setProperty("--x", ${Math.random()*600-300}px);
+    c.style.setProperty("--y", ${Math.random()*600-300}px);
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2500);
+  }
+}
